@@ -1,49 +1,77 @@
 
 """
-Program to check if two lines A(X1,X2) and B(X3,X4) on the x-axis are overlapping.
+Program to check greater version
 
 TEST CASES:
-1.) x1 = 1, x2 = 3, x3 = 2, x4 = 5
-2.) x1 = 1, x2 = 5, x3 = 3, x4 = 5
-3.) x1 = 2, x2 = 6, x3 = 3, x4 = 5
-4.) x1 = 1, x2 = 6, x3 = 0, x4 = 8
+1.) v1 = 1.2, v2 = 1.1
+2.) v1 = 1.1, v2 = 1.1.1
+3.) v1 = 2.1.0 , v2 = 1.2.9
+4.) v1 = 1.2 , v2 = <blank>
+
 """
 
+def check_digit(lst):
+    """
+    Function to check if the version number is a valid version ie. all digits.
+    lst: contains version elements after splitting with delimiter as '.'
+    Returns True if all values are digits.
+    """
+    for i in lst:
+        if not i.isdigit():
+            return False
+    return True
 
-def check_valid(x2,x1):
+def check_version(version1,version2):
     """
-    Function to check if coordinates entered for the line are valid.
+    Function to check which version is greater
+    returns 1 if version1 is greater.
+    returns 2 if version2 is greater.
+    returns 0 if both versions are the same.
+    version1: the first version.
+    version2: the second version.
+    length: contains the smaller of the two version lengths.
     """
-    if x2 < x1 or x2==x1:
-        return True
+    length = min(len(version1),len(version2))
+    i = 0
+    while i<length:
+        if version1[i]>version2[i]:
+            return 1
 
-def check_overlap(x3,x2):
-    """
-    Function to check if the two lines entered are overlapping
-    """
-    if x3<x2 and x4>x2:
-        return True
-    elif x3<x1 and x4>x1:
-        return True
-    elif x3>x1 and x4<x2:
-        return True
-    elif x3<x1 and x4>x2:
-        return True
+        elif version1[i]<version2[i]:
+            return 2
+        else:
+            i+=1
+    if len(version1) > len(version2):
+        return 1
+    elif len(version2) > len(version1):
+        return 2
     else:
-        return False
+        return 0
 
+"""
+Querying a user repeatedly to enter a valid version number.
+"""
+v1 = input("Enter first version:\t")
+version1 = v1.split('.')
+while check_digit(version1) != True:
+    v1 = input("Enter Again! Must be all digits:\t")
+    version1 = v1.split('.')
 
-x1 = input("Enter line X1 of line 1:\t")
-x2 = input("Enter line X2 of line 1:\t")
-if check_valid(x2,x1):
-    x2 = input("Enter x2 again, can't be smaller than or equal to x1")
+"""
+Querying a user repeatedly to enter a valid version number.
+"""
+v2 = input("Enter second version:\t")
+version2 = v2.split('.')
+while check_digit(version2) != True:
+    v2 = input("Enter Again! Must be all digits:\t")
+    version2 = v2.split('.')
 
-x3 = input("Enter line X3 of line 2:\t")
-x4 = input("Enter line X4 of line 2:\t")
-if check_valid(x4,x3):
-    x4 = input("Enter x4 again, can't be smaller than or equal to x3")
-
-if check_overlap(x3,x2):
-    print("There is an overlap")
+"""
+Calling function check_version to figure out which version is greater.
+"""
+if check_version(version1,version2) == 1:
+    print("{} is greater".format(v1))
+elif check_version(version1,version2) == 2:
+    print("{} is greater".format(v2))
 else:
-    print("No overlap")
+    print("They are equal")
